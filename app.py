@@ -4,6 +4,7 @@ import requests
 from flask import Flask, request, jsonify
 from langchain_groq import ChatGroq
 from flask_cors import CORS
+from flask_cors import cross_origin
 
 app = Flask(__name__)
 
@@ -20,6 +21,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Endpoint to set (or update) the API key.
 @app.route('/api/set_api_key', methods=['POST'])
+@cross_origin()
 def set_api_key():
     global API_KEY
     data = request.get_json()
@@ -31,6 +33,7 @@ def set_api_key():
 
 # Endpoint to set (or update) the manual prompt.
 @app.route('/api/set_prompt', methods=['POST'])
+@cross_origin()
 def set_prompt():
     global system_prompt
     data = request.get_json()
@@ -45,6 +48,7 @@ def set_prompt():
 
 # Endpoint to set (or update) the prompt fetched from a URL.
 @app.route('/api/set_prompt_from_url', methods=['POST'])
+@cross_origin()
 def set_prompt_from_url():
     global system_prompt
     data = request.get_json()
@@ -83,6 +87,7 @@ When the user asks you questions, reference the data above.
 
 # Endpoint to get the full system prompt (combining both components).
 @app.route('/api/get_prompt', methods=['GET'])
+@cross_origin()
 def get_prompt():
     global system_prompt
     if system_prompt["manual"] is None and system_prompt["url"] is None:
@@ -101,6 +106,7 @@ def get_prompt():
 
 # Endpoint to call the ChatGroq model.
 @app.route('/api/chat', methods=['POST'])
+@cross_origin()
 def chat():
     data = request.get_json()
     if not data or "human_message" not in data:
