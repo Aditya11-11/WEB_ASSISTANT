@@ -97,7 +97,7 @@ def get_prompt():
     return jsonify({"system_prompt": combined_prompt}), 200
 
 # Endpoint to call the ChatGroq model.
-@app.route('/chat', methods=['POST'])
+@app.route('/api/chat', methods=['POST'])
 def chat():
     data = request.get_json()
     if not data or "human_message" not in data:
