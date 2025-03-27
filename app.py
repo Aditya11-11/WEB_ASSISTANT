@@ -13,7 +13,7 @@ system_prompt = {
 }
 
 # Global variable to store the API key.
-API_KEY = None
+API_KEY = "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"
 
 # Endpoint to set (or update) the API key.
 @app.route('/api/set_api_key', methods=['POST'])
