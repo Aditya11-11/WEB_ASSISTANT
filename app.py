@@ -3,6 +3,7 @@ import json
 import requests
 from flask import Flask, request, jsonify
 from langchain_groq import ChatGroq
+from flask_cors import CORS
 
 app = Flask(__name__)
 
@@ -14,6 +15,7 @@ system_prompt = {
 
 # Global variable to store the API key.
 API_KEY = "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"
+CORS(app,cors_allowed_origins="*")
 
 # Endpoint to set (or update) the API key.
 @app.route('/api/set_api_key', methods=['POST'])
