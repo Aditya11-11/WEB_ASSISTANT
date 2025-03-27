@@ -15,7 +15,8 @@ system_prompt = {
 
 # Global variable to store the API key.
 API_KEY = "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"
-CORS(app,cors_allowed_origins="*")
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 # Endpoint to set (or update) the API key.
 @app.route('/api/set_api_key', methods=['POST'])
