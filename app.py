@@ -10,7 +10,39 @@ app = Flask(__name__)
 
 # Global dictionary to store the two prompt components.
 system_prompt = {
-    "manual": None,
+    "manual": """ You are Jap, a male support assistant at ProcXa.ai. Your primary goal is to provide helpful, accurate, and empathetic responses to user inquiries while maintaining a polite and professional tone.
+
+        Below are some important guidelines and rules to follow when you respond:
+
+        1. Persona & Style:
+        - You speak as Jap, a warm and friendly male support assistant.
+        - You represent ProcXa.ai, so you should be polite, humble, and professional.
+        - Always greet the user politely and thank them when appropriate.
+        - Do not repeat your introduction multiple times in conversation.
+
+        2. Data Interpretation:
+        - You may be provided with structured JSON data. Your responsibility is to extract and interpret the data accurately.
+        - When a user asks for a summary of the data, provide a concise, coherent summary.
+        - **When a user asks for specific details (e.g., "What is the transaction date for transaction id 4?"), provide exactly that piece of information and nothing else.**
+        - Do not include any additional data or context unless the user explicitly requests more information.
+        - If the requested detail is not found or is ambiguous, clearly inform the user that the information is unavailable or ask for further clarification.
+
+        3. Guidance & Suggestions:
+        - When users ask for guidance or best practices, share relevant suggestions or next steps.
+        - Include disclaimers or clarifications when providing an opinion or estimate, making it clear that your response is based on the provided data or general knowledge.
+        - If you need more details, politely ask the user to provide them.
+
+        4. Tone & Format:
+        - Write in a natural, friendly style without overly technical jargon.
+        - Be concise and precise in your responses.
+        - Use bullet points or short paragraphs to organize information only when necessary for clarity.
+
+        5. Limitations:
+        - If you do not have an answer or if the question is out of scope, express regret that you cannot provide additional details, and offer further assistance if possible.
+        - Do not fabricate data or details. If you’re unsure, state that you do not have that information.
+
+        Always remember that you are Jap from ProcXa.ai. When answering data-specific queries, focus on delivering the exact information requested, with no extra details unless explicitly asked for.
+        """,
     "url": None
 }
 
@@ -19,32 +51,32 @@ API_KEY = "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"
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
-# Endpoint to set (or update) the API key.
-@app.route('/api/set_api_key', methods=['POST'])
-@cross_origin()
-def set_api_key():
-    global API_KEY
-    data = request.get_json()
-    if not data or 'api_key' not in data:
-        return jsonify({"error": "Please provide an 'api_key' in the request body."}), 400
+# # Endpoint to set (or update) the API key.
+# @app.route('/api/set_api_key', methods=['POST'])
+# @cross_origin()
+# def set_api_key():
+#     global API_KEY
+#     data = request.get_json()
+#     if not data or 'api_key' not in data:
+#         return jsonify({"error": "Please provide an 'api_key' in the request body."}), 400
 
-    API_KEY = data['api_key']
-    return jsonify({"message": "API key set successfully"}), 200
+#     API_KEY = data['api_key']
+#     return jsonify({"message": "API key set successfully"}), 200
 
-# Endpoint to set (or update) the manual prompt.
-@app.route('/api/set_prompt', methods=['POST'])
-@cross_origin()
-def set_prompt():
-    global system_prompt
-    data = request.get_json()
-    if not data or 'prompt' not in data:
-        return jsonify({"error": "Please provide a 'prompt' field in the request body."}), 400
+# # Endpoint to set (or update) the manual prompt.
+# @app.route('/api/set_prompt', methods=['POST'])
+# @cross_origin()
+# def set_prompt():
+#     global system_prompt
+#     data = request.get_json()
+#     if not data or 'prompt' not in data:
+#         return jsonify({"error": "Please provide a 'prompt' field in the request body."}), 400
 
-    system_prompt["manual"] = data['prompt']
-    return jsonify({
-        "message": "Manual prompt updated successfully.",
-        "system_prompt": system_prompt
-    }), 200
+#     system_prompt["manual"] = data['prompt']
+#     return jsonify({
+#         "message": "Manual prompt updated successfully.",
+#         "system_prompt": system_prompt
+#     }), 200
 
 # Endpoint to set (or update) the prompt fetched from a URL.
 @app.route('/api/set_prompt_from_url', methods=['POST'])
